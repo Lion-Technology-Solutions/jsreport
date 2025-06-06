@@ -33,10 +33,10 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+      - name: Push default
+        uses: docker/build-push-action@v3
         with:
-          context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
+          file: packages/jsreport/docker/full/Dockerfile
+          tags: jsreport/jsreport:${{ github.event.release.tag_name }}-full, jsreport/jsreport:latest-full
