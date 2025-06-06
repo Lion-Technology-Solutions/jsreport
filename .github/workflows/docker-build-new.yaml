@@ -39,4 +39,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           file: packages/jsreport/docker/full/Dockerfile
-          tags: jsreport/jsreport:${{ github.event.release.tag_name }}-latest, jsreport/jsreport:latest
+          tags: |
+            jsreport/jsreport:latest
+            jsreport/jsreport:${{ github.event.release.tag_name }}
