@@ -26,6 +26,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Validate tag
+        id: validate-tag
+        run: |
+          if [ -z "${{ github.event.release.tag_name }}" ]; then
+            echo "::error::Release tag is empty"
+            exit 1
+          fi
+          echo "tag_name=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -40,5 +48,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           file: packages/jsreport/docker/full/Dockerfile
           tags: |
-            jsreport/jsreport:latest-${{ github.event.release.tag_name }}
-            jsreport/jsreport:${{ github.event.release.tag_name }}
+            jsreport/jsreport:latest
+            jsreport/jsreport:${{ steps.validate-tag.outputs.tag_name }}
